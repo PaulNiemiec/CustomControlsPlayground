@@ -1,11 +1,12 @@
-﻿namespace CustomControlsPlayground;
+﻿using CustomControlsPlayground.VIewModels;
+
+namespace CustomControlsPlayground;
 
 public partial class MainPage : ContentPage
 {
-    int count = 0;
-
-    public MainPage()
+    public MainPage(MainPageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }

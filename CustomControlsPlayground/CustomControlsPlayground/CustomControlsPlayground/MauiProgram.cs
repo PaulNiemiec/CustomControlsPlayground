@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CustomControlsPlayground.VIewModels;
+using Microsoft.Extensions.Logging;
 
 namespace CustomControlsPlayground;
 
@@ -33,7 +34,7 @@ public static class MauiProgram
     
     private static void ConfigureViewModels(this IServiceCollection services)
     {
-        
+        services.AddTransient<MainPageViewModel>();
     }
     
     private static void ConfigureServices(this IServiceCollection services)
