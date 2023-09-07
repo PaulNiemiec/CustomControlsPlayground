@@ -14,11 +14,30 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+        
+        builder.Services.ConfigureViews();
+        builder.Services.ConfigureServices();
+        builder.Services.ConfigureViewModels();
 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
 
         return builder.Build();
+    }
+    
+    private static void ConfigureViews(this IServiceCollection services)
+    {
+        services.AddTransient<MainPage>();
+    }
+    
+    private static void ConfigureViewModels(this IServiceCollection services)
+    {
+        
+    }
+    
+    private static void ConfigureServices(this IServiceCollection services)
+    {
+        
     }
 }
