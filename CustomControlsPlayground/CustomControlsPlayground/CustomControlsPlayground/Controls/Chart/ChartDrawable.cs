@@ -8,38 +8,15 @@ public class ChartDrawable : IDrawable
     public ChartDataPoint[] DataSet { get; set; }
     public ChartType ChartType { get; set; }
     public Color ChartColor { get; set; }
+    
+    private float MaxValue => (int)Math.Ceiling(DataSet.Max(dataSet => dataSet.Value) / ((double)YAxisGraduation - 1)) *
+                              (YAxisGraduation - 1);
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        switch (ChartType)
-        {
-            case ChartType.Bar:
-                DrawBarChart(canvas, dirtyRect);
-                break;
-            case ChartType.Linear:
-                DrawLinearChart(canvas, dirtyRect);
-                break;
-            default:
-                DrawBarChart(canvas, dirtyRect);
-                break;
-        }
-    }
-
-    #region LinearChart
-
-    private void DrawLinearChart(ICanvas canvas, RectF dirtyRect)
-    {
-        
-    }
-
-    #endregion
-    #region BarChart
-
-    private void DrawBarChart(ICanvas canvas, RectF dirtyRect)
-    {
         var yPositions =
             CreateEqualPositionsBetweenStartAndEnd(dirtyRect.Y, dirtyRect.Y + dirtyRect.Height, YAxisGraduation, false)
-                .ToList();
+                .ToArray();
         var xPositions =
             CreateEqualPositionsBetweenStartAndEnd(dirtyRect.X, dirtyRect.X + dirtyRect.Width, DataSet.Length, false)
                 .ToArray();
@@ -48,29 +25,61 @@ public class ChartDrawable : IDrawable
         canvas.StrokeSize = 1;
 
         DrawHorizontalLines(canvas, yPositions, dirtyRect);
-        canvas.DrawLine(dirtyRect.X, dirtyRect.Y, dirtyRect.X, yPositions.Max());
-
-        DrawBars(canvas, xPositions, yPositions.Max(), yPositions.Min());
-    }
-
-    private void DrawBars(ICanvas canvas, float[] xPositions, float yMax, float yMin)
-    {
-        canvas.StrokeSize = StrokeSize;
-        canvas.StrokeColor = ChartColor;
-
-        var chartHeight = yMax - yMin;
-        var max = (int)Math.Ceiling(DataSet.Max(dataSet => dataSet.Value) / ((double)YAxisGraduation - 1)) *
-                  (YAxisGraduation - 1);
-
-        for (var i = 0; i < xPositions.Length && i < DataSet.Length; i++)
+        
+        switch (ChartType)
         {
-            var barHeight = yMax - DataSet[i].Value / max * chartHeight;
-            canvas.DrawLine(xPositions[i], yMax,xPositions[i], barHeight);
+            case ChartType.Bar:
+                DrawBarChart(canvas, dirtyRect, yPositions, xPositions);
+                break;
+            case ChartType.Linear:
+                DrawLinearChart(canvas, dirtyRect, yPositions, xPositions);
+                break;
+            default:
+                DrawBarChart(canvas, dirtyRect, yPositions ,xPositions);
+                break;
         }
     }
 
-    #endregion
-    
+    private void DrawLinearChart(ICanvas canvas, RectF dirtyRect, IReadOnlyList<float> yPositions, IReadOnlyList<float> xPositions)
+    {
+        canvas.StrokeSize = 4;
+        canvas.StrokeColor = Color.FromRgba(ChartColor.Red, ChartColor.Green, ChartColor.Blue, 0.2);
+        
+        var chartHeight = yPositions.Max() - yPositions.Min();
+
+        canvas.FillColor = ChartColor;
+
+        for(var i = 1; i < yPositions.Count && i < DataSet.Length; i++)
+        {
+            var previousHeight = yPositions.Max() - DataSet[i - 1].Value / MaxValue * chartHeight;
+            var currentHeight = yPositions.Max() - DataSet[i].Value / MaxValue * chartHeight;
+            
+            if (i == 1)
+            {
+                canvas.FillEllipse(xPositions[i - 1] - 4, previousHeight - 4, 8,8);
+            }
+            canvas.FillEllipse(xPositions[i] - 4, currentHeight - 4, 8,8);
+            
+            canvas.DrawLine(xPositions[i - 1],previousHeight, xPositions[i], currentHeight);
+        }
+    }
+
+    private void DrawBarChart(ICanvas canvas, RectF dirtyRect, IReadOnlyCollection<float> yPositions, IReadOnlyList<float> xPositions)
+    {
+        canvas.DrawLine(dirtyRect.X, dirtyRect.Y, dirtyRect.X, yPositions.Max());
+        
+        canvas.StrokeColor = ChartColor;
+        canvas.StrokeSize = StrokeSize;
+
+        var chartHeight = yPositions.Max() - yPositions.Min();
+
+        for (var i = 0; i < xPositions.Count && i < DataSet.Length; i++)
+        {
+            var barHeight = yPositions.Max() - DataSet[i].Value / MaxValue * chartHeight;
+            canvas.DrawLine(xPositions[i], yPositions.Max(),xPositions[i], barHeight);
+        }
+    }
+
     private IEnumerable<float> CreateEqualPositionsBetweenStartAndEnd(float start, float end, int factor, bool shouldStartAtTheBeginning = true)
     {
         var length = end - start;
@@ -89,7 +98,7 @@ public class ChartDrawable : IDrawable
 
         return positions;
     }
-    
+
     private void DrawHorizontalLines(ICanvas canvas, IEnumerable<float> yPositions, RectF dirtyRect)
     {
         foreach (var yPosition in yPositions)
