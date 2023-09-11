@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:CustomControlsPlayground.Controls.Chart"
              xmlns:viewModels="clr-namespace:CustomControlsPlayground.ViewModels"
-             x:Class="CustomControlsPlayground.MainPage"
+             x:Class="CustomControlsPlayground.Views.ChartPage"
              Title="{Binding Title}"
-             x:DataType="viewModels:MainPageViewModel">
+             x:DataType="viewModels:ChartViewModel">
 
     <ScrollView>
         <VerticalStackLayout
@@ -13,7 +13,7 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Button Text="Chart control" Command="{Binding NavigateToChartPage}"/>
+            <chart:Chart WidthRequest="300" HeightRequest="150" DataSet="{Binding DataSet}" ChartColor="Aqua" ChartType="Linear"/>
             
         </VerticalStackLayout>
     </ScrollView>

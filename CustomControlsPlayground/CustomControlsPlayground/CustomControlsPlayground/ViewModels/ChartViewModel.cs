@@ -1,8 +1,8 @@
 using CustomControlsPlayground.Controls.Chart;
 
-namespace CustomControlsPlayground.VIewModels;
+namespace CustomControlsPlayground.ViewModels;
 
-public partial class MainPageViewModel : ViewModelBase
+public partial class ChartViewModel : ViewModelBase
 {
     public ChartDataPoint[] DataSet { get; } = 
     {
@@ -12,10 +12,8 @@ public partial class MainPageViewModel : ViewModelBase
         new ChartDataPoint() { Name = "Name4", Value = 13 },
         new() {Name = "Name5", Value = 31}
     };
-
-    public double[] YAxisValues { get; } = { 0, 10, 20, 30, 40, 50 };
-    public int YGraduation { get; } = 6;
-    public MainPageViewModel()
+    
+    public ChartViewModel()
     {
         Title = "Custom controls playground";
     }
