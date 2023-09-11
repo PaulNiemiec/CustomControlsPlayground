@@ -1,4 +1,4 @@
-﻿using CustomControlsPlayground.VIewModels;
+﻿using CustomControlsPlayground.ViewModels;
 
 namespace CustomControlsPlayground;
 

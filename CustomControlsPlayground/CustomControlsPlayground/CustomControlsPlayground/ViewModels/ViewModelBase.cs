@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace CustomControlsPlayground.VIewModels;
+namespace CustomControlsPlayground.ViewModels;
 
 public partial class ViewModelBase : ObservableObject
 {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:CustomControlsPlayground.Controls.Chart"
+             x:Class="CustomControlsPlayground.Controls.Chart.Chart">
+    
+    <ContentView.Resources>
+        <chart:ChartDrawable x:Key="Drawable"/>
+    </ContentView.Resources>
+    
+    <Grid x:Name="ChartGrid" ColumnDefinitions="*,6*" RowDefinitions="4*,*" >
+        <Grid x:Name="YAxisGrid" HorizontalOptions="Center"/>
+        <GraphicsView x:Name="ChartGraphicsView"  Grid.Column="1" Grid.Row="0" Drawable="{StaticResource Drawable}"/>
+        <Grid x:Name="XAxisGrid" Grid.Row="1" Grid.Column="1" />
+    </Grid>
+</ContentView>
