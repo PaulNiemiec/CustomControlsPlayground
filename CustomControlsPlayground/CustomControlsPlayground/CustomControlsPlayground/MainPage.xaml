@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vIewModels="clr-namespace:CustomControlsPlayground.VIewModels"
+             xmlns:chart="clr-namespace:CustomControlsPlayground.Controls.Chart"
              x:Class="CustomControlsPlayground.MainPage"
              Title="{Binding Title}"
              x:DataType="vIewModels:MainPageViewModel">
@@ -12,6 +13,8 @@
             Padding="30,0"
             VerticalOptions="Center">
 
+            <chart:Chart WidthRequest="300" HeightRequest="150" DataSet="{Binding DataSet}" ChartColor="Aqua" />
+            
         </VerticalStackLayout>
     </ScrollView>
 
