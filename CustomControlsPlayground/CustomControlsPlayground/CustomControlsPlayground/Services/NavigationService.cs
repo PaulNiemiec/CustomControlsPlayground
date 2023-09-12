@@ -5,6 +5,7 @@ namespace CustomControlsPlayground.Services;
 public interface INavigationService
 {
     Task NavigateToChartPage();
+    Task NavigateToGaugeChartPage();
 }
 
 public class NavigationService : INavigationService
@@ -23,5 +24,6 @@ public class NavigationService : INavigationService
     }
 
     public async Task NavigateToChartPage() => await NavigateToPage<ChartPage>();
+    public async Task NavigateToGaugeChartPage() => await NavigateToPage<GaugeChartPage>();
 }
 

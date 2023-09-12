@@ -33,12 +33,14 @@ public static class MauiProgram
     {
         services.AddTransient<MainPage>();
         services.AddTransient<ChartPage>();
+        services.AddTransient<GaugeChartPage>();
     }
     
     private static void ConfigureViewModels(this IServiceCollection services)
     {
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ChartViewModel>();
+        services.AddTransient<GaugeChartViewModel>();
     }
     
     private static void ConfigureServices(this IServiceCollection services)
