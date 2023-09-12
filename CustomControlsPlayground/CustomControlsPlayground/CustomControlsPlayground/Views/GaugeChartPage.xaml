@@ -8,8 +8,9 @@
              x:DataType="viewModels:GaugeChartViewModel"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <VerticalStackLayout>
-            <gaugeChart:GaugeChart HeightRequest="150" WidthRequest="250"/>
+        <VerticalStackLayout Spacing="16" Margin="16">
+            <gaugeChart:GaugeChart ChartColor="Purple" HeightRequest="200" WidthRequest="200" CurrentValue="{Binding Source={x:Reference Slider}, Path=Value}"/>
+            <Slider Minimum="0" Maximum="100" x:Name="Slider" />
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

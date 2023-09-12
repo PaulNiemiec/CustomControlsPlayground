@@ -15,4 +15,13 @@ public partial class GaugeChart : ContentView
             chart.GaugeChartGraphicsView.Invalidate();
         }
     }
+
+    private static void OnCurrentValuePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+    {
+        if (bindable is GaugeChart chart && newvalue is double currentValue)
+        {
+            ((GaugeChartDrawable)chart.GaugeChartGraphicsView.Drawable).CurrentValue = currentValue;
+            chart.GaugeChartGraphicsView.Invalidate();
+        }
+    }
 }

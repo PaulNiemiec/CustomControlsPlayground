@@ -13,7 +13,7 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <chart:Chart WidthRequest="300" HeightRequest="150" DataSet="{Binding DataSet}" ChartColor="Aqua" ChartType="Linear"/>
+            <chart:Chart WidthRequest="300" HeightRequest="300" DataSet="{Binding DataSet}" ChartColor="Aqua" ChartType="Linear"/>
             
         </VerticalStackLayout>
     </ScrollView>

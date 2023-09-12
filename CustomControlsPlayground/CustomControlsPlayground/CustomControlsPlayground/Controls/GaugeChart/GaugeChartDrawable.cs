@@ -1,55 +1,42 @@
 
+using Font = Microsoft.Maui.Font;
+
 namespace CustomControlsPlayground.Controls.GaugeChart;
 
 public class GaugeChartDrawable : IDrawable
 {
-    private const int GaugeWidth = 32;
-
     public Color ChartColor { get; set; } = Colors.Aqua;
-
-    private readonly string[] _labelsValues = CreateLabelsValues();
-    private PointF? _arcCenter;
+    public double CurrentValue { get; set; }
+    
+    private PointF _center;
+    private const float Margin = 20;
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        _arcCenter ??= new PointF(dirtyRect.Width / 2.0f, dirtyRect.Height/ 2.0f);
-
-        //canvas.FillRectangle(dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
-        //canvas.DrawString("Text", 0, 0, dirtyRect.Width, dirtyRect.Height, HorizontalAlignment.Left, VerticalAlignment.Top, textFlow: TextFlow.OverflowBounds);
-        DrawLabels(canvas, dirtyRect);
-    }
-
-    private void DrawLabels(ICanvas canvas, RectF dirtyRect)
-    {
-        canvas.FontSize = 10;
-        canvas.FontColor = Colors.White;
+        if (CurrentValue == 0)
+        {
+            return;
+        }
         
-        var radius = dirtyRect.Width < dirtyRect.Height ? dirtyRect.Width / 2f - 10 : dirtyRect.Height / 2f - 10;
-
-        var angleStep = 180 / (float)_labelsValues.Length;
-        var currentAngle = 0f;
-
-        foreach (var labelValue in _labelsValues)
+        if (_center == default)
         {
-            var angleInRadians = currentAngle * Math.PI / 180;
-            
-            var x = _arcCenter!.Value.X + radius * (float)Math.Cos(angleInRadians);
-            var y = _arcCenter!.Value.X + radius * (float)Math.Sin(angleInRadians);
-            
-            canvas.DrawString(labelValue, x,y,dirtyRect.Width, dirtyRect.Height, HorizontalAlignment.Left, VerticalAlignment.Top, TextFlow.OverflowBounds);
-            currentAngle += angleStep;
-        }
-    }
-
-    private static string[] CreateLabelsValues()
-    {
-        var labels = new string[11];
-
-        for (var i = 0; i < labels.Length; i++)
-        {
-            labels[i] = (i*10).ToString();
+            _center = dirtyRect.Center;
         }
 
-        return labels;
+        var radius = dirtyRect.Width > dirtyRect.Height ? dirtyRect.Height / 2f : dirtyRect.Width / 2f;
+        radius -= Margin;
+
+        canvas.StrokeSize = 32;
+        canvas.StrokeColor = Colors.LightGray;
+        canvas.DrawCircle(_center, radius);
+
+        var currentValueRadius = 360f * (float)(CurrentValue * 0.01) + 90;
+
+        canvas.StrokeColor = ChartColor;
+        canvas.DrawArc(dirtyRect.X + Margin, dirtyRect.Y + Margin, radius * 2, radius * 2, 90,
+            currentValueRadius, false, false);
+
+        canvas.FontSize = 32;
+        canvas.DrawString($"{Math.Round(CurrentValue)}%", dirtyRect, HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 }
